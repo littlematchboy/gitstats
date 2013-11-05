@@ -69,35 +69,6 @@ td {
 }
 
 /* Navigation bar; tabbed style */
-.nav {
-	border-bottom: 1px solid black;
-	padding: 0.3em;
-}
-
-.nav ul {
-	list-style-type: none;
-	display: inline;
-	margin: 0;
-	padding: 0;
-}
-
-.nav li {
-	display: inline;
-}
-
-.nav li a {
-	padding: 0.3em;
-	text-decoration: none;
-	color: black;
-	border: 1px solid black;
-	margin: 0.5em;
-	background-color: #ddf;
-}
-
-.nav li a:hover {
-	background-color: #ddd;
-	border-bottom: 1px solid #ddf;
-}
 
 img {
 	border: 1px solid black;
