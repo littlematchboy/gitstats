@@ -10,6 +10,10 @@ table.noborders {
     background-color:white;
 }
 
+table.static-metric {
+    background-color:#ddf;
+}
+
 .vtable {
 	float: right;
 	clear: both;

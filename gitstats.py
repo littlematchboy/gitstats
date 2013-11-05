@@ -840,7 +840,7 @@ class HTMLReportCreator(ReportCreator):
         # Hour of Day
         f.write(html_header(2, 'Hour of Day'))
         hour_of_day = data.getActivityByHourOfDay()
-        f.write('<table><tr><th>Hour</th>')
+        f.write('<table class="static-metric"><tr><th>Hour</th>')
         for i in range(0, 24):
             f.write('<th>%d</th>' % i)
         f.write('</tr>\n<tr><th>Commits</th>')
@@ -1423,7 +1423,6 @@ plot """
 	</ul>
   </div>
 </div>
-<br/>
 """)
         
 def usage():
