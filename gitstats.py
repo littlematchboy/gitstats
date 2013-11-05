@@ -334,7 +334,7 @@ class GitDataCollector(DataCollector):
         # Outputs "<stamp> <date> <time> <timezone> <author> '<' <mail> '>'"
         rev_list_output = getpipeoutput(['git rev-list --pretty=format:"%%at %%ai %%aN <%%aE>" %s %s' % (getcommitrange('HEAD'), get_commit_time()), 'grep -v ^commit'])
         if rev_list_output:
-            lines = getpipeoutput(['git rev-list --pretty=format:"%%at %%ai %%aN <%%aE>" %s %s' % (getcommitrange('HEAD'), get_commit_time()), 'grep -v ^commit']).split('\n')
+            lines = rev_list_output.split('\n')
         else:
             lines = []
         for line in lines:
