@@ -773,7 +773,14 @@ class HTMLReportCreator(ReportCreator):
         f.write('<dt>Age</dt><dd>%d days, %d active days (%3.2f%%)</dd>' % (data.getCommitDeltaDays(), len(data.getActiveDays()), (100.0 * len(data.getActiveDays()) / data.getCommitDeltaDays())))
         f.write('<dt>Total Files</dt><dd>%s</dd>' % data.getTotalFiles())
         f.write('<dt>Total Lines of Code</dt><dd>%s (%d added, %d removed)</dd>' % (data.getTotalLOC(), data.total_lines_added, data.total_lines_removed))
-        f.write('<dt>Total Commits</dt><dd>%s (average %.1f commits per active day, %.1f per all days)</dd>' % (data.getTotalCommits(), float(data.getTotalCommits()) / len(data.getActiveDays()), float(data.getTotalCommits()) / data.getCommitDeltaDays()))
+
+        total_commits = data.getTotalCommits()
+        if (total_commits > 0):
+            f.write('<dt>Total Commits</dt><dd>%s (average %.1f commits per active day, %.1f per all days)</dd>' %
+                    (total_commits, float(total_commits) / len(data.getActiveDays()), float(total_commits) / data.getCommitDeltaDays()))
+        else:
+            f.write('<dt>Total Commits</dt>: 0')
+
         f.write('<dt>Authors</dt><dd>%s (average %.1f commits per author)</dd>' % (data.getTotalAuthors(), (1.0 * data.getTotalCommits()) / data.getTotalAuthors()))
         f.write('</dl>')
 
@@ -842,11 +849,11 @@ class HTMLReportCreator(ReportCreator):
                 fp.write('%d 0\n' % i)
         fp.close()
         f.write('</tr>\n<tr><th>%</th>')
-        totalcommits = data.getTotalCommits()
+        total_commits = data.getTotalCommits()
         for i in range(0, 24):
             if i in hour_of_day:
                 r = 127 + int((float(hour_of_day[i]) / data.activity_by_hour_of_day_busiest) * 128)
-                f.write('<td style="background-color: rgb(%d, 0, 0)">%.2f</td>' % (r, (100.0 * hour_of_day[i]) / totalcommits))
+                f.write('<td style="background-color: rgb(%d, 0, 0)">%.2f</td>' % (r, (100.0 * hour_of_day[i]) / total_commits))
             else:
                 f.write('<td>0.00</td>')
         f.write('</tr></table>')
@@ -873,7 +880,7 @@ class HTMLReportCreator(ReportCreator):
             f.write('<tr>')
             f.write('<th>%s</th>' % (WEEKDAYS[d]))
             if d in day_of_week:
-                f.write('<td>%d (%.2f%%)</td>' % (day_of_week[d], (100.0 * day_of_week[d]) / totalcommits))
+                f.write('<td>%d (%.2f%%)</td>' % (day_of_week[d], (100.0 * day_of_week[d]) / total_commits))
             else:
                 f.write('<td>0</td>')
             f.write('</tr>')
@@ -1066,7 +1073,7 @@ class HTMLReportCreator(ReportCreator):
             n += 1
             info = data.getDomainInfo(domain)
             fp.write('%s %d %d\n' % (domain, n , info['commits']))
-            f.write('<tr><th>%s</th><td>%d (%.2f%%)</td></tr>' % (domain, info['commits'], (100.0 * info['commits'] / totalcommits)))
+            f.write('<tr><th>%s</th><td>%d (%.2f%%)</td></tr>' % (domain, info['commits'], (100.0 * info['commits'] / total_commits)))
         f.write('</table></div>')
         f.write('<img src="domains.png" alt="Commits by Domains" />')
         fp.close()
