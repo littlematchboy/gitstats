@@ -1400,6 +1400,8 @@ plot """
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>GitStats - %s</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet"/>
     <link rel="stylesheet" href="%s" type="text/css" />
     <meta name="generator" content="GitStats %s" />
     <script type="text/javascript" src="sortable.js"></script>
@@ -1409,16 +1411,19 @@ plot """
 
     def printNav(self, f):
         f.write("""
-<div class="nav">
-<ul>
-<li><a href="index.html">General</a></li>
-<li><a href="activity.html">Activity</a></li>
-<li><a href="authors.html">Authors</a></li>
-<li><a href="files.html">Files</a></li>
-<li><a href="lines.html">Lines</a></li>
-<li><a href="tags.html">Tags</a></li>
-</ul>
+<div class="navbar">
+  <div class="navbar-inner">
+	<ul class="nav">
+		<li><a href="index.html">General</a></li>
+		<li><a href="activity.html">Activity</a></li>
+		<li><a href="authors.html">Authors</a></li>
+		<li><a href="files.html">Files</a></li>
+		<li><a href="lines.html">Lines</a></li>
+		<li><a href="tags.html">Tags</a></li>
+	</ul>
+  </div>
 </div>
+<br/>
 """)
         
 def usage():
