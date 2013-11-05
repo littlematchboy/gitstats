@@ -929,7 +929,11 @@ class HTMLReportCreator(ReportCreator):
             commits = 0
             if mm in data.activity_by_month_of_year:
                 commits = data.activity_by_month_of_year[mm]
-            f.write('<tr><td>%d</td><td>%d (%.2f %%)</td></tr>' % (mm, commits, (100.0 * commits) / data.getTotalCommits()))
+
+            total_commits = data.getTotalCommits()
+            if total_commits > 0:
+                f.write('<tr><td>%d</td><td>%d (%.2f %%)</td></tr>' % (mm, commits, (100.0 * commits) / total_commits))
+
             fp.write('%d %d\n' % (mm, commits))
         fp.close()
         f.write('</table></div>')
@@ -951,7 +955,10 @@ class HTMLReportCreator(ReportCreator):
         f.write(html_header(2, 'Commits by Year'))
         f.write('<div class="vtable"><table><tr><th>Year</th><th>Commits (% of all)</th><th>Lines added</th><th>Lines removed</th></tr>')
         for yy in reversed(sorted(data.commits_by_year.keys())):
-            f.write('<tr><td>%s</td><td>%d (%.2f%%)</td><td>%d</td><td>%d</td></tr>' % (yy, data.commits_by_year.get(yy,0), (100.0 * data.commits_by_year.get(yy,0)) / data.getTotalCommits(), data.lines_added_by_year.get(yy,0), data.lines_removed_by_year.get(yy,0)))
+            total_commits = data.getTotalCommits()
+            if total_commits > 0:
+                f.write('<tr><td>%s</td><td>%d (%.2f%%)</td><td>%d</td><td>%d</td></tr>' %
+                        (yy, data.commits_by_year.get(yy,0), (100.0 * data.commits_by_year.get(yy,0)) / total_commits, data.lines_added_by_year.get(yy,0), data.lines_removed_by_year.get(yy,0)))
         f.write('</table></div>')
         f.write('<img src="commits_by_year.png" alt="Commits by Year" />')
         fg = open(path + '/commits_by_year.dat', 'w')
