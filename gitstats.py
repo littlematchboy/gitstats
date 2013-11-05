@@ -790,7 +790,7 @@ class HTMLReportCreator(ReportCreator):
 
         f.write('</dl>')
 
-        f.write('</body>\n</html>')
+        f.write('</div></body>\n</html>')
         f.close()
 
         ###
@@ -980,7 +980,7 @@ class HTMLReportCreator(ReportCreator):
                 f.write('<tr><th>%s</th><td style="background-color: rgb(%d, 0, 0)">%d</td></tr>' % (i, r, commits))
             f.write('</tr></table>')
 
-        f.write('</body></html>')
+        f.write('</div></body></html>')
         f.close()
 
         ###
@@ -1093,7 +1093,7 @@ class HTMLReportCreator(ReportCreator):
         f.write('<img src="domains.png" alt="Commits by Domains" />')
         fp.close()
 
-        f.write('</body></html>')
+        f.write('</div></body></html>')
         f.close()
 
         ###
@@ -1144,7 +1144,7 @@ class HTMLReportCreator(ReportCreator):
             f.write('<tr><td>%s</td><td>%d (%.2f%%)</td><td>%d (%.2f%%)</td><td>%d</td></tr>' % (ext, files, (100.0 * files) / data.getTotalFiles(), lines, loc_percentage, lines / files))
         f.write('</table>')
 
-        f.write('</body></html>')
+        f.write('</div></body></html>')
         f.close()
 
         ###
@@ -1166,7 +1166,7 @@ class HTMLReportCreator(ReportCreator):
             fg.write('%d %d\n' % (stamp, data.changes_by_date[stamp]['lines']))
         fg.close()
 
-        f.write('</body></html>')
+        f.write('</div></body></html>')
         f.close()
 
         ###
@@ -1194,7 +1194,7 @@ class HTMLReportCreator(ReportCreator):
             f.write('<tr><td>%s</td><td>%s</td><td>%d</td><td>%s</td></tr>' % (tag, data.tags[tag]['date'], data.tags[tag]['commits'], ', '.join(authorinfo)))
         f.write('</table>')
 
-        f.write('</body></html>')
+        f.write('</div></body></html>')
         f.close()
 
         self.createGraphs(path)
@@ -1407,6 +1407,7 @@ plot """
     <script type="text/javascript" src="sortable.js"></script>
 </head>
 <body>
+<div class="container">
 """ % (self.title, conf['style'], getversion()))
 
     def printNav(self, f):
