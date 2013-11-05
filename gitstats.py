@@ -15,7 +15,7 @@ import time
 import zlib
 
 if sys.version_info < (2, 6):
-    print >> sys.stderr, "Python 2.6 or higher is required for gitstats"
+    print(sys.stderr, "Python 2.6 or higher is required for gitstats")
     sys.exit(1)
 
 from multiprocessing import Pool
@@ -109,7 +109,7 @@ def getstatsummarycounts(line):
 VERSION = 0
 
 
-def getversion():
+def get_version():
     global VERSION
     if VERSION == 0:
         gitstats_repo = os.path.dirname(os.path.abspath(__file__))
@@ -125,7 +125,6 @@ def get_git_version():
 def get_gnuplot_version():
     return getpipeoutput(['%s --version' % gnuplot_cmd]).split('\n')[0]
 
-
 def get_num_of_files_from_rev(time_rev):
     """
     Get number of files changed in commit
@@ -133,8 +132,7 @@ def get_num_of_files_from_rev(time_rev):
     time, rev = time_rev
     return (int(time), rev, int(getpipeoutput(['git ls-tree -r --name-only "%s"' % rev, 'wc -l']).split('\n')[0]))
 
-
-def getnumoflinesinblob(ext_blob):
+def get_num_of_lines_in_blob(ext_blob):
     """
     Get number of lines in blob
     """
@@ -535,7 +533,7 @@ class GitDataCollector(DataCollector):
                 blobs_to_read.append((ext, blob_id))
 
         #Get info abount line count for new blob's that wasn't found in cache
-        ext_blob_linecount = Pool(processes=24).map(getnumoflinesinblob, blobs_to_read)
+        ext_blob_linecount = Pool(processes=24).map(get_num_of_lines_in_blob, blobs_to_read)
 
         #Update cache and write down info about number of number of lines
         for (ext, blob_id, linecount) in ext_blob_linecount:
@@ -803,7 +801,7 @@ class HTMLReportCreator(ReportCreator):
         datetime.datetime.now().strftime(format), time.time() - data.getStampCreated()))
         f.write(
             '<dt>Generator</dt><dd><a href="http://gitstats.sourceforge.net/">GitStats</a> (version %s), %s, %s</dd>' % (
-            getversion(), get_git_version(), get_gnuplot_version()))
+            get_version(), get_git_version(), get_gnuplot_version()))
         f.write('<dt>Report Period</dt><dd>%s to %s</dd>' % (
         data.getFirstCommitDate().strftime(format), data.getLastCommitDate().strftime(format)))
         f.write('<dt>Age</dt><dd>%d days, %d active days (%3.2f%%)</dd>' % (
@@ -1458,7 +1456,7 @@ class HTMLReportCreator(ReportCreator):
                 <script type="text/javascript" src="sortable.js"></script>
             </head>
             <body>
-            """ % (self.title, conf['style'], getversion()))
+            """ % (self.title, conf['style'], get_version()))
 
     def printNav(self, f):
         f.write("""
@@ -1513,14 +1511,14 @@ class GitStats:
             usage()
             sys.exit(0)
 
-        outputpath = os.path.abspath(args[-1])
-        rundir = os.getcwd()
+        output_path = os.path.abspath(args[-1])
+        run_dir = os.getcwd()
 
         try:
-            os.makedirs(outputpath)
+            os.makedirs(output_path)
         except OSError:
             pass
-        if not os.path.isdir(outputpath):
+        if not os.path.isdir(output_path):
             print
             'FATAL: Output path is not a directory or does not exist'
             sys.exit(1)
@@ -1531,8 +1529,8 @@ class GitStats:
             sys.exit(1)
 
         print
-        'Output path: %s' % outputpath
-        cachefile = os.path.join(outputpath, 'gitstats.cache')
+        'Output path: %s' % output_path
+        cachefile = os.path.join(output_path, 'gitstats.cache')
 
         data = GitDataCollector()
         data.loadCache(cachefile)
@@ -1552,12 +1550,12 @@ class GitStats:
         data.saveCache(cachefile)
         data.refine()
 
-        os.chdir(rundir)
+        os.chdir(run_dir)
 
         print
         'Generating report...'
         report = HTMLReportCreator()
-        report.create(data, outputpath)
+        report.create(data, output_path)
 
         time_end = time.time()
         exectime_internal = time_end - time_start
@@ -1569,7 +1567,7 @@ class GitStats:
             'You may now run:'
             print
             print
-            '   sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''")
+            '   sensible-browser \'%s\'' % os.path.join(output_path, 'index.html').replace("'", "'\\''")
             print
 
 
