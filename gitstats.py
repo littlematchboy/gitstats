@@ -49,6 +49,7 @@ conf = {
     'linear_linestats': 1,
     'project_name': '',
     'merge_authors': {},
+    'output': '/opt/web/gitstats/',
     'processes': 8,
 }
 
@@ -1457,11 +1458,13 @@ class GitStats:
             usage()
             sys.exit(0)
 
-        #if len(args) == 1:
-        #    outputpath =
-
-        outputpath = os.path.abspath(args[-1])
         rundir = os.getcwd()
+
+        # if output is not specified, output to web directory (default folder)
+        if len(args) == 1:
+            outputpath = conf['output']
+        else:
+            outputpath = os.path.abspath(args[-1])
 
         try:
             os.makedirs(outputpath)
@@ -1481,7 +1484,12 @@ class GitStats:
         data = GitDataCollector()
         data.loadCache(cachefile)
 
-        for gitpath in args[0:-1]:
+        if len(args) == 1:
+            gitpaths = args[0:]
+        else:
+            gitpaths = args[0:-1]
+
+        for gitpath in gitpaths:
             print 'Git path: %s' % gitpath
 
             os.chdir(gitpath)
@@ -1498,7 +1506,14 @@ class GitStats:
 
         print 'Generating report...'
         report = HTMLReportCreator()
-        report.create(data, outputpath)
+
+        single_project_output_path = os.path.join(outputpath, data.projectname)
+
+        time_format = '%Y-%m-%d %H:%M:%S'
+        single_project_output_path += \
+            "(%s to %s)" % (data.getFirstCommitDate().strftime(time_format), data.getLastCommitDate().strftime(time_format))
+
+        report.create(data, single_project_output_path)
 
         time_end = time.time()
         exectime_internal = time_end - time_start
@@ -1506,7 +1521,7 @@ class GitStats:
         if sys.stdin.isatty():
             print 'You may now run:'
             print
-            print '   sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''")
+            print 'sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''")
             print
 
 if __name__=='__main__':
