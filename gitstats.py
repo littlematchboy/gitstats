@@ -994,7 +994,7 @@ class HTMLReportCreator(ReportCreator):
         # Authors :: List of authors
         f.write(html_header(2, 'List of Authors'))
 
-        f.write('<table class="authors table-bordered" id="authors">')
+        f.write('<table class="sortable table-bordered" id="authors">')
         f.write('<tr><th>Author</th><th>Commits (%)</th><th>+ lines</th><th>- lines</th><th>First commit</th><th>Last commit</th><th class="unsortable">Age</th><th>Active days</th><th># by commits</th></tr>')
         for author in data.getAuthors(conf['max_authors']):
             info = data.getAuthorInfo(author)
