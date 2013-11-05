@@ -6,6 +6,10 @@ body {
 	background-color: #cdcdcd;
 }
 
+table.noborders {
+    background-color:white;
+}
+
 .vtable {
 	float: right;
 	clear: both;
