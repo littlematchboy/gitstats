@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2007-2013 Heikki Hokkanen <hoxu@users.sf.net> & others (see doc/author.txt)
+# Copyright (c) 2007-2013 Heikki Hokkanen <hoxu@users.sf.net> & others (see doc/AUTHOR)
 # GPLv2 / GPLv3
 import datetime
 import getopt
@@ -15,7 +15,11 @@ import time
 import zlib
 
 if sys.version_info < (2, 6):
+<<<<<<< HEAD
     print >> sys.stderr, "Python 2.6 or higher is required for gitstats"
+=======
+    print(sys.stderr, "Python 2.6 or higher is required for gitstats")
+>>>>>>> parent of dc80b93... Python naming
     sys.exit(1)
 
 from multiprocessing import Pool
@@ -44,6 +48,11 @@ conf = {
 'authors_top': 5,
 'commit_begin': '',
 'commit_end': 'HEAD',
+<<<<<<< HEAD
+=======
+'time_begin': '',
+'time_end': '',
+>>>>>>> parent of dc80b93... Python naming
 'linear_linestats': 1,
 'project_name': '',
 'merge_authors': {},
@@ -107,7 +116,11 @@ def getstatsummarycounts(line):
 VERSION = 0
 
 
+<<<<<<< HEAD
 def getversion():
+=======
+def get_version():
+>>>>>>> parent of dc80b93... Python naming
     global VERSION
     if VERSION == 0:
         gitstats_repo = os.path.dirname(os.path.abspath(__file__))
@@ -116,6 +129,7 @@ def getversion():
     return VERSION
 
 
+<<<<<<< HEAD
 def getgitversion():
     return getpipeoutput(['git --version']).split('\n')[0]
 
@@ -125,14 +139,28 @@ def getgnuplotversion():
 
 
 def getnumoffilesfromrev(time_rev):
+=======
+def get_git_version():
+    return getpipeoutput(['git --version']).split('\n')[0]
+
+
+def get_gnuplot_version():
+    return getpipeoutput(['%s --version' % gnuplot_cmd]).split('\n')[0]
+
+def get_num_of_files_from_rev(time_rev):
+>>>>>>> parent of dc80b93... Python naming
     """
     Get number of files changed in commit
     """
     time, rev = time_rev
     return (int(time), rev, int(getpipeoutput(['git ls-tree -r --name-only "%s"' % rev, 'wc -l']).split('\n')[0]))
 
+<<<<<<< HEAD
 
 def getnumoflinesinblob(ext_blob):
+=======
+def get_num_of_lines_in_blob(ext_blob):
+>>>>>>> parent of dc80b93... Python naming
     """
     Get number of lines in blob
     """
@@ -474,7 +502,11 @@ class GitDataCollector(DataCollector):
                 revs_to_read.append((time, rev))
 
         #Read revisions from repo
+<<<<<<< HEAD
         time_rev_count = Pool(processes=conf['processes']).map(getnumoffilesfromrev, revs_to_read)
+=======
+        time_rev_count = Pool(processes=conf['processes']).map(get_num_of_files_from_rev, revs_to_read)
+>>>>>>> parent of dc80b93... Python naming
 
         #Update cache with new revisions and append then to general list
         for (time, rev, count) in time_rev_count:
@@ -533,7 +565,11 @@ class GitDataCollector(DataCollector):
                 blobs_to_read.append((ext, blob_id))
 
         #Get info abount line count for new blob's that wasn't found in cache
+<<<<<<< HEAD
         ext_blob_linecount = Pool(processes=24).map(getnumoflinesinblob, blobs_to_read)
+=======
+        ext_blob_linecount = Pool(processes=24).map(get_num_of_lines_in_blob, blobs_to_read)
+>>>>>>> parent of dc80b93... Python naming
 
         #Update cache and write down info about number of number of lines
         for (ext, blob_id, linecount) in ext_blob_linecount:
@@ -801,7 +837,11 @@ class HTMLReportCreator(ReportCreator):
         datetime.datetime.now().strftime(format), time.time() - data.getStampCreated()))
         f.write(
             '<dt>Generator</dt><dd><a href="http://gitstats.sourceforge.net/">GitStats</a> (version %s), %s, %s</dd>' % (
+<<<<<<< HEAD
             getversion(), getgitversion(), getgnuplotversion()))
+=======
+            get_version(), get_git_version(), get_gnuplot_version()))
+>>>>>>> parent of dc80b93... Python naming
         f.write('<dt>Report Period</dt><dd>%s to %s</dd>' % (
         data.getFirstCommitDate().strftime(format), data.getLastCommitDate().strftime(format)))
         f.write('<dt>Age</dt><dd>%d days, %d active days (%3.2f%%)</dd>' % (
@@ -1456,7 +1496,11 @@ class HTMLReportCreator(ReportCreator):
                 <script type="text/javascript" src="sortable.js"></script>
             </head>
             <body>
+<<<<<<< HEAD
             """ % (self.title, conf['style'], getversion()))
+=======
+            """ % (self.title, conf['style'], get_version()))
+>>>>>>> parent of dc80b93... Python naming
 
     def printNav(self, f):
         f.write("""
@@ -1511,6 +1555,7 @@ class GitStats:
             usage()
             sys.exit(0)
 
+<<<<<<< HEAD
         outputpath = os.path.abspath(args[-1])
         rundir = os.getcwd()
 
@@ -1519,18 +1564,37 @@ class GitStats:
         except OSError:
             pass
         if not os.path.isdir(outputpath):
+=======
+        output_path = os.path.abspath(args[-1])
+        run_dir = os.getcwd()
+
+        try:
+            os.makedirs(output_path)
+        except OSError:
+            pass
+        if not os.path.isdir(output_path):
+>>>>>>> parent of dc80b93... Python naming
             print
             'FATAL: Output path is not a directory or does not exist'
             sys.exit(1)
 
+<<<<<<< HEAD
         if not getgnuplotversion():
+=======
+        if not get_gnuplot_version():
+>>>>>>> parent of dc80b93... Python naming
             print
             'gnuplot not found'
             sys.exit(1)
 
         print
+<<<<<<< HEAD
         'Output path: %s' % outputpath
         cachefile = os.path.join(outputpath, 'gitstats.cache')
+=======
+        'Output path: %s' % output_path
+        cachefile = os.path.join(output_path, 'gitstats.cache')
+>>>>>>> parent of dc80b93... Python naming
 
         data = GitDataCollector()
         data.loadCache(cachefile)
@@ -1550,12 +1614,20 @@ class GitStats:
         data.saveCache(cachefile)
         data.refine()
 
+<<<<<<< HEAD
         os.chdir(rundir)
+=======
+        os.chdir(run_dir)
+>>>>>>> parent of dc80b93... Python naming
 
         print
         'Generating report...'
         report = HTMLReportCreator()
+<<<<<<< HEAD
         report.create(data, outputpath)
+=======
+        report.create(data, output_path)
+>>>>>>> parent of dc80b93... Python naming
 
         time_end = time.time()
         exectime_internal = time_end - time_start
@@ -1567,7 +1639,11 @@ class GitStats:
             'You may now run:'
             print
             print
+<<<<<<< HEAD
             '   sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''")
+=======
+            '   sensible-browser \'%s\'' % os.path.join(output_path, 'index.html').replace("'", "'\\''")
+>>>>>>> parent of dc80b93... Python naming
             print
 
 
