@@ -781,7 +781,12 @@ class HTMLReportCreator(ReportCreator):
         else:
             f.write('<dt>Total Commits</dt>: 0')
 
-        f.write('<dt>Authors</dt><dd>%s (average %.1f commits per author)</dd>' % (data.getTotalAuthors(), (1.0 * data.getTotalCommits()) / data.getTotalAuthors()))
+        total_authors = data.getTotalAuthors()
+        if (total_authors > 0):
+            f.write('<dt>Authors</dt><dd>%s (average %.1f commits per author)</dd>' % (data.getTotalAuthors(), (1.0 * data.getTotalCommits()) / data.getTotalAuthors()))
+        else:
+            f.write('<dt>Authors</dt><dd>0')
+
         f.write('</dl>')
 
         f.write('</body>\n</html>')
