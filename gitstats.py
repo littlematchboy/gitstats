@@ -1405,6 +1405,7 @@ plot """
     <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet"/>
     <link rel="stylesheet" href="%s" type="text/css" />
     <meta name="generator" content="GitStats %s" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="sortable.js"></script>
     <script type="text/javascript" src="/assets/js/app.js"></script>
 </head>
