@@ -819,7 +819,7 @@ class HTMLReportCreator(ReportCreator):
             stampcur -= deltaweek
 
         # top row: commits & bar
-        f.write('<table class="noborders"><tr>')
+        f.write('<table class="noborders table"><tr>')
         for i in range(0, WEEKS):
             commits = 0
             if weeks[i] in data.activity_by_year_week:
@@ -875,7 +875,7 @@ class HTMLReportCreator(ReportCreator):
         # Day of Week
         f.write(html_header(2, 'Day of Week'))
         day_of_week = data.getActivityByDayOfWeek()
-        f.write('<div class="vtable"><table>')
+        f.write('<div class="vtable"><table class="table">')
         f.write('<tr><th>Day</th><th>Total (%)</th></tr>')
         fp = open(path + '/day_of_week.dat', 'w')
         for d in range(0, 7):
@@ -923,7 +923,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Month of Year
         f.write(html_header(2, 'Month of Year'))
-        f.write('<div class="vtable"><table>')
+        f.write('<div class="vtable"><table class="table">')
         f.write('<tr><th>Month</th><th>Commits (%)</th></tr>')
         fp = open (path + '/month_of_year.dat', 'w')
         for mm in range(1, 13):
@@ -942,7 +942,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Commits by year/month
         f.write(html_header(2, 'Commits by year/month'))
-        f.write('<div class="vtable"><table><tr><th>Month</th><th>Commits</th><th>Lines added</th><th>Lines removed</th></tr>')
+        f.write('<div class="vtable"><table class="table"><tr><th>Month</th><th>Commits</th><th>Lines added</th><th>Lines removed</th></tr>')
         for yymm in reversed(sorted(data.commits_by_month.keys())):
             f.write('<tr><td>%s</td><td>%d</td><td>%d</td><td>%d</td></tr>' % (yymm, data.commits_by_month.get(yymm,0), data.lines_added_by_month.get(yymm,0), data.lines_removed_by_month.get(yymm,0)))
         f.write('</table></div>')
@@ -954,7 +954,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Commits by year
         f.write(html_header(2, 'Commits by Year'))
-        f.write('<div class="vtable"><table><tr><th>Year</th><th>Commits (% of all)</th><th>Lines added</th><th>Lines removed</th></tr>')
+        f.write('<div class="vtable"><table class="table"><tr><th>Year</th><th>Commits (% of all)</th><th>Lines added</th><th>Lines removed</th></tr>')
         for yy in reversed(sorted(data.commits_by_year.keys())):
             total_commits = data.getTotalCommits()
             if total_commits > 0:
@@ -971,7 +971,7 @@ class HTMLReportCreator(ReportCreator):
         commits_by_timezone = data.commits_by_timezone.values()
         if commits_by_timezone:
             f.write(html_header(2, 'Commits by Timezone'))
-            f.write('<table><tr>')
+            f.write('<table class="table"><tr>')
             f.write('<th>Timezone</th><th>Commits</th>')
             max_commits_on_tz = max(data.commits_by_timezone.values())
             for i in sorted(data.commits_by_timezone.keys(), key = lambda n : int(n)):
@@ -1050,7 +1050,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Authors :: Author of Month
         f.write(html_header(2, 'Author of Month'))
-        f.write('<table class="sortable" id="aom">')
+        f.write('<table class="sortable table table-bordered" id="aom">')
         f.write('<tr><th>Month</th><th>Author</th><th>Commits (%%)</th><th class="unsortable">Next top %d</th><th>Number of authors</th></tr>' % conf['authors_top'])
         for yymm in reversed(sorted(data.author_of_month.keys())):
             authordict = data.author_of_month[yymm]
@@ -1063,7 +1063,7 @@ class HTMLReportCreator(ReportCreator):
         f.write('</table>')
 
         f.write(html_header(2, 'Author of Year'))
-        f.write('<table class="sortable" id="aoy"><tr><th>Year</th><th>Author</th><th>Commits (%%)</th><th class="unsortable">Next top %d</th><th>Number of authors</th></tr>' % conf['authors_top'])
+        f.write('<table class="sortable table table-bordered" id="aoy"><tr><th>Year</th><th>Author</th><th>Commits (%%)</th><th class="unsortable">Next top %d</th><th>Number of authors</th></tr>' % conf['authors_top'])
         for yy in reversed(sorted(data.author_of_year.keys())):
             authordict = data.author_of_year[yy]
             authors = getkeyssortedbyvalues(authordict)
@@ -1077,7 +1077,7 @@ class HTMLReportCreator(ReportCreator):
         f.write(html_header(2, 'Commits by Domains'))
         domains_by_commits = getkeyssortedbyvaluekey(data.domains, 'commits')
         domains_by_commits.reverse() # most first
-        f.write('<div class="vtable"><table>')
+        f.write('<div class="vtable"><table class="table">')
         f.write('<tr><th>Domains</th><th>Total (%)</th></tr>')
         fp = open(path + '/domains.dat', 'w')
         n = 0
@@ -1133,7 +1133,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Files :: Extensions
         f.write(html_header(2, 'Extensions'))
-        f.write('<table class="sortable" id="ext"><tr><th>Extension</th><th>Files (%)</th><th>Lines (%)</th><th>Lines/file</th></tr>')
+        f.write('<table class="sortable table table-bordered" id="ext"><tr><th>Extension</th><th>Files (%)</th><th>Lines (%)</th><th>Lines/file</th></tr>')
         for ext in sorted(data.extensions.keys()):
             files = data.extensions[ext]['files']
             lines = data.extensions[ext]['lines']
