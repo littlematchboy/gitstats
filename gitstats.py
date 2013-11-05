@@ -332,7 +332,7 @@ class GitDataCollector(DataCollector):
 
         # Collect revision statistics
         # Outputs "<stamp> <date> <time> <timezone> <author> '<' <mail> '>'"
-        lines = getpipeoutput(['git rev-list --pretty=format:"%%at %%ai %%aN <%%aE>" %s %s' % (getcommitrange('HEAD'), get_commit_time()), 'grep -v ^commit']).split('\n')
+        lines = getpipeoutput(['git rev-list --pretty=format:"%%at %%ai %%aN <%%aE>" %s %s' % (getcommitrange('HEAD')), 'grep -v ^commit']).split('\n')
         for line in lines:
             parts = line.split(' ', 4)
             author = ''
