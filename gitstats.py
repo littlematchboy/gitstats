@@ -1513,6 +1513,14 @@ class GitStats:
         single_project_output_path += \
             "(%s to %s)" % (data.getFirstCommitDate().strftime(time_format), data.getLastCommitDate().strftime(time_format))
 
+        try:
+            os.makedirs(single_project_output_path)
+        except OSError:
+            pass
+        if not os.path.isdir(single_project_output_path):
+            print 'FATAL: Unable to create output folder'
+            sys.exit(1)
+
         report.create(data, single_project_output_path)
 
         time_end = time.time()
