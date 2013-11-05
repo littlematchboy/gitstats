@@ -16,6 +16,7 @@ table {
 
 table td {
     background-color:white;
+    white-space: nowrap;
 }
 
 .vtable {
