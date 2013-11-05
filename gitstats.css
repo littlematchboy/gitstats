@@ -14,6 +14,10 @@ table.static-metric {
     background-color:#ddf;
 }
 
+table.static-metric td {
+    background-color:white;
+}
+
 .vtable {
 	float: right;
 	clear: both;

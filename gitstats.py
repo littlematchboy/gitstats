@@ -896,7 +896,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Hour of Week
         f.write(html_header(2, 'Hour of Week'))
-        f.write('<table>')
+        f.write('<table class="static-metric">')
 
         f.write('<tr><th>Weekday</th>')
         for hour in range(0, 24):
