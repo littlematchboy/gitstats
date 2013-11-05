@@ -840,7 +840,7 @@ class HTMLReportCreator(ReportCreator):
         # Hour of Day
         f.write(html_header(2, 'Hour of Day'))
         hour_of_day = data.getActivityByHourOfDay()
-        f.write('<table class="static-metric table-bordered"><tr><th>Hour</th>')
+        f.write('<table class="static-metric table table-bordered"><tr><th>Hour</th>')
         for i in range(0, 24):
             f.write('<th>%d</th>' % i)
         f.write('</tr>\n<tr><th>Commits</th>')
@@ -896,7 +896,7 @@ class HTMLReportCreator(ReportCreator):
 
         # Hour of Week
         f.write(html_header(2, 'Hour of Week'))
-        f.write('<table class="static-metric table-bordered">')
+        f.write('<table class="static-metric table table-bordered">')
 
         f.write('<tr><th>Weekday</th>')
         for hour in range(0, 24):
@@ -994,7 +994,7 @@ class HTMLReportCreator(ReportCreator):
         # Authors :: List of authors
         f.write(html_header(2, 'List of Authors'))
 
-        f.write('<table class="sortable table-bordered" id="authors">')
+        f.write('<table class="sortable table table-bordered" id="authors">')
         f.write('<tr><th>Author</th><th>Commits (%)</th><th>+ lines</th><th>- lines</th><th>First commit</th><th>Last commit</th><th class="unsortable">Age</th><th>Active days</th><th># by commits</th></tr>')
         for author in data.getAuthors(conf['max_authors']):
             info = data.getAuthorInfo(author)
