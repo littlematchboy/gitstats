@@ -21,21 +21,6 @@ dd {
 	clear: left;
 }
 
-table {
-	border: 1px solid black;
-	border-collapse: collapse;
-	font-size: 80%;
-	margin-bottom: 1em;
-}
-
-table.noborders {
-	border: none;
-}
-
-table.noborders td {
-	border: none;
-}
-
 .vtable {
 	float: right;
 	clear: both;
@@ -59,13 +44,6 @@ th a {
 
 tr:hover {
 	background-color: #ddf;
-}
-
-td {
-	border: 1px solid black;
-	padding: 0.2em;
-	padding-left: 0.3em;
-	padding-right: 0.2em;
 }
 
 /* Navigation bar; tabbed style */
