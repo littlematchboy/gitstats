@@ -452,6 +452,8 @@ class GitDataCollector(DataCollector):
         #Look up rev in cache and take info from cache if found
         #If not append rev to list of rev to read from repo
         for revline in revlines:
+            if not revline.index(' '):
+                continue
             time, rev = revline.split(' ')
             #if cache empty then add time and rev to list of new rev's
             #otherwise try to read needed info from cache
