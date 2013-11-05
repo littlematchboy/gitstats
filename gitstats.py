@@ -769,7 +769,8 @@ class HTMLReportCreator(ReportCreator):
         f.write('<dl>')
         f.write('<dt>Project name</dt><dd>%s</dd>' % (data.projectname))
         f.write('<dt>Generated</dt><dd>%s (in %d seconds)</dd>' % (datetime.datetime.now().strftime(format), time.time() - data.getStampCreated()))
-        f.write('<dt>Generator</dt><dd><a href="http://gitstats.sourceforge.net/">GitStats</a> (version %s), %s, %s</dd>' % (getversion(), getgitversion(), getgnuplotversion()))
+        f.write('<dt>Generator</dt><dd><a href="http://gitstats.sourceforge.net/">GitStats</a> forked & improved '
+                '<a href="https://github.com/nguyentruongtho/gitstats">https://github.com/nguyentruongtho/gitstats</a> (version %s), %s, %s</dd>' % (getversion(), getgitversion(), getgnuplotversion()))
         f.write('<dt>Report Period</dt><dd>%s to %s</dd>' % (data.getFirstCommitDate().strftime(format), data.getLastCommitDate().strftime(format)))
         f.write('<dt>Age</dt><dd>%d days, %d active days (%3.2f%%)</dd>' % (data.getCommitDeltaDays(), len(data.getActiveDays()), (100.0 * len(data.getActiveDays()) / data.getCommitDeltaDays())))
         f.write('<dt>Total Files</dt><dd>%s</dd>' % data.getTotalFiles())
@@ -1182,7 +1183,7 @@ class HTMLReportCreator(ReportCreator):
             f.write('<dt>Average commits per tag</dt><dd>%.2f</dd>' % (1.0 * data.getTotalCommits() / len(data.tags)))
         f.write('</dl>')
 
-        f.write('<table class="tags">')
+        f.write('<table class="tags table table-bordered">')
         f.write('<tr><th>Name</th><th>Date</th><th>Commits</th><th>Authors</th></tr>')
         # sort the tags by date desc
         tags_sorted_by_date_desc = map(lambda el : el[1], reversed(sorted(map(lambda el : (el[1]['date'], el[0]), data.tags.items()))))
