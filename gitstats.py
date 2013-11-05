@@ -967,15 +967,17 @@ class HTMLReportCreator(ReportCreator):
         fg.close()
 
         # Commits by timezone
-        f.write(html_header(2, 'Commits by Timezone'))
-        f.write('<table><tr>')
-        f.write('<th>Timezone</th><th>Commits</th>')
-        max_commits_on_tz = max(data.commits_by_timezone.values())
-        for i in sorted(data.commits_by_timezone.keys(), key = lambda n : int(n)):
-            commits = data.commits_by_timezone[i]
-            r = 127 + int((float(commits) / max_commits_on_tz) * 128)
-            f.write('<tr><th>%s</th><td style="background-color: rgb(%d, 0, 0)">%d</td></tr>' % (i, r, commits))
-        f.write('</tr></table>')
+        commits_by_timezone = data.commits_by_timezone.values()
+        if commits_by_timezone:
+            f.write(html_header(2, 'Commits by Timezone'))
+            f.write('<table><tr>')
+            f.write('<th>Timezone</th><th>Commits</th>')
+            max_commits_on_tz = max(data.commits_by_timezone.values())
+            for i in sorted(data.commits_by_timezone.keys(), key = lambda n : int(n)):
+                commits = data.commits_by_timezone[i]
+                r = 127 + int((float(commits) / max_commits_on_tz) * 128)
+                f.write('<tr><th>%s</th><td style="background-color: rgb(%d, 0, 0)">%d</td></tr>' % (i, r, commits))
+            f.write('</tr></table>')
 
         f.write('</body></html>')
         f.close()
