@@ -1453,9 +1453,12 @@ class GitStats:
                 usage()
                 sys.exit()
 
-        if len(args) < 2:
+        if len(args) < 1:
             usage()
             sys.exit(0)
+
+        if len(args) == 1:
+            outputpath =
 
         outputpath = os.path.abspath(args[-1])
         rundir = os.getcwd()
@@ -1485,6 +1488,7 @@ class GitStats:
 
             print 'Collecting data...'
             data.collect(gitpath)
+            os.chdir(rundir)
 
         print 'Refining data...'
         data.saveCache(cachefile)
