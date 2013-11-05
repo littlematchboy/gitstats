@@ -1457,8 +1457,8 @@ class GitStats:
             usage()
             sys.exit(0)
 
-        if len(args) == 1:
-            outputpath =
+        #if len(args) == 1:
+        #    outputpath =
 
         outputpath = os.path.abspath(args[-1])
         rundir = os.getcwd()
