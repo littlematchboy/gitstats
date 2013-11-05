@@ -1406,6 +1406,7 @@ plot """
     <link rel="stylesheet" href="%s" type="text/css" />
     <meta name="generator" content="GitStats %s" />
     <script type="text/javascript" src="sortable.js"></script>
+    <script type="text/javascript" src="/assets/js/app.js"></script>
 </head>
 <body>
 <div class="container">
