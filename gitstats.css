@@ -10,11 +10,11 @@ table.noborders {
     background-color:white;
 }
 
-table.static-metric {
+table {
     background-color:#ddf;
 }
 
-table.static-metric td {
+table td {
     background-color:white;
 }
 
