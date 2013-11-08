@@ -1,7 +1,10 @@
-__author__ = 'tho'
 
+__author__ = 'tho'
 class ReportCreator:
     """Creates the actual report based on given data."""
-    def __init__(self, path, data):
-        self.path = path
+    def __init__(self):
+        pass
+
+    def create(self, data, path):
         self.data = data
+        self.path = path

@@ -734,8 +734,9 @@ def html_header(level, text):
     return '\n<h%d><a href="#%s" name="%s">%s</a></h%d>\n\n' % (level, name, name, text, level)
 
 class HTMLReportCreator(ReportCreator):
-    def __init__(self, data, path):
-        super(HTMLReportCreator, self).__init__(self, data, path)
+    def create(self, data, path):
+        self.data = data
+        self.path = path
         self.title = data.projectname
 
         # copy static files. Looks in the binary directory, ../share/gitstats and /usr/share/gitstats
@@ -1521,7 +1522,7 @@ class GitStats:
             print('FATAL: Unable to create output folder')
             sys.exit(1)
 
-        report = HTMLReportCreator(data, single_project_output_path)
+        report = HTMLReportCreator.create(data, single_project_output_path)
 
         time_end = time.time()
         exectime_internal = time_end - time_start
