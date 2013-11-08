@@ -8,7 +8,7 @@ import time
 from GitDataCollector import GitDataCollector
 
 from HtmlReportCreator import HTMLReportCreator
-from common import getgnuplotversion
+from common import getgnuplotversion, exectime_external
 from config import conf
 
 if sys.version_info < (2, 6):
@@ -18,8 +18,6 @@ if sys.version_info < (2, 6):
 
 os.environ['LC_ALL'] = 'C'
 VERSION = 0
-exectime_internal = 0.0
-exectime_external = 0.0
 time_start = time.time()
 
 def usage():

@@ -12,7 +12,8 @@ from config import conf, gnuplot_cmd
 GNUPLOT_COMMON = 'set terminal png transparent size 640,240\nset size 1.0,1.0\n'
 ON_LINUX = (platform.system() == 'Linux')
 WEEKDAYS = ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
-
+exectime_internal = 0.0
+exectime_external = 0.0
 
 def html_linkify(text):
     return text.lower().replace(' ', '_')
