@@ -17,7 +17,6 @@ if sys.version_info < (2, 6):
 
 
 os.environ['LC_ALL'] = 'C'
-VERSION = 0
 time_start = time.time()
 
 def usage():
