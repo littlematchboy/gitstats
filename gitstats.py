@@ -735,8 +735,7 @@ def html_header(level, text):
 
 class HTMLReportCreator(ReportCreator):
     def create(self, data, path):
-        self.data = data
-        self.path = path
+        ReportCreator.create(self, data, path)
         self.title = data.projectname
 
         # copy static files. Looks in the binary directory, ../share/gitstats and /usr/share/gitstats
