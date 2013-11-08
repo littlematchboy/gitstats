@@ -1521,7 +1521,8 @@ class GitStats:
             print('FATAL: Unable to create output folder')
             sys.exit(1)
 
-        report = HTMLReportCreator.create(data, single_project_output_path)
+        report = HTMLReportCreator()
+        report.create(data, single_project_output_path)
 
         time_end = time.time()
         exectime_internal = time_end - time_start
