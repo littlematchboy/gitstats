@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Copyright (c) 2007-2013 Heikki Hokkanen <hoxu@users.sf.net> & others (see doc/author.txt)
 # GPLv2 / GPLv3
+from datetime import datetime
 import getopt
 import os
 import sys
@@ -110,10 +111,10 @@ class GitStats:
         time_begin = conf['time_begin']
         time_end = conf['time_end']
         if not time_end:
-            time_end = 'NOW'
+            time_end = datetime.now().strftime("%Y-%m-%d")
         if time_begin:
             # time_format = '%Y-%m-%d %H:%M:%S'
-            single_project_output_path += "(%s to %s)" % (time_begin, time_end)
+            single_project_output_path += "%s to %s" % (time_begin, time_end)
 
         try:
             os.makedirs(single_project_output_path)
@@ -131,10 +132,7 @@ class GitStats:
         print('Execution time %.5f secs, %.5f secs (%.2f %%) in external commands)' % (
         exectime_internal, exectime_external, (100.0 * exectime_external) / exectime_internal))
         if sys.stdin.isatty():
-            print('You may now run:')
-            print()
-            print('sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''"))
-            print()
+            print('Finished!')
 
 
 if __name__ == '__main__':
