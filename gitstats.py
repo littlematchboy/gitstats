@@ -114,7 +114,9 @@ class GitStats:
             time_end = datetime.now().strftime("%Y-%m-%d")
         if time_begin:
             # time_format = '%Y-%m-%d %H:%M:%S'
-            single_project_output_path += "%s to %s" % (time_begin, time_end)
+            single_project_output_path = os.path.join(single_project_output_path, "%s to %s" % (time_begin, time_end))
+        else:
+            single_project_output_path = os.path.join(single_project_output_path, "all")
 
         try:
             os.makedirs(single_project_output_path)
