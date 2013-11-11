@@ -1,0 +1,74 @@
+﻿body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+  background-color: black;
+}
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+.black {
+  color: black;
+}
+.used {
+  text-align:right;
+  padding:1px 5px 1px 0px;
+  border-right: 2px solid red;
+}
+.total {
+  border: 1px solid #aaaaaa;
+  background-color:white;
+  width:460px;
+}
+.indicator {
+}
+.disk_list {
+  min-height:200px;
+  overflow:hidden;
+}
+.process_list {
+  height:200px;
+  overflow: hidden;
+}
+.blue_border {
+  border: 1px solid blue;
+}
+
+#loading {
+  color:black;
+  background-color: red;
+  padding-left: 5px;
+  margin-top:10px;
+  font-weight: bold;
+}
+.server {
+  border: 1px solid #cdcdcd;
+  border-radius: 5px;
+  padding: 0px 5px;
+  box-shadow: 5px 5px 2px #cdcdcd;
+  background-color: white;
+  color:black;
+}
+
+.server-title {
+  padding:5px;
+}
+
+h3 {
+  padding-left: 5px;
+}
+.container {
+  width: 90% !important;
+  margin: 0px auto !important;
+}
+
+.blink {
+text-decoration:blink;
+
+-webkit-animation-name: blink; 
+-webkit-animation-iteration-count: infinite; 
+-webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+-webkit-animation-duration: 1s;
+}

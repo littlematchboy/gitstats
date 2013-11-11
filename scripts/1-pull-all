@@ -1,0 +1,8 @@
+CURRENT_DIR=`pwd`
+
+for dir in repos/*; 
+do 
+	cd $dir
+	git pull
+	cd $CURRENT_DIR 
+done

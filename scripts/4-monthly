@@ -1,0 +1,14 @@
+CURRENT_DIR=`pwd`
+
+TIME_WEEK_AGO=`date --date='1 month ago' +%Y-%m-%d`
+
+for dir in repos/*; 
+do 
+	cd $dir
+	git pull
+	
+	MAIN_BRANCH=`git branch | sed -n '/\* /s///p'`
+	gitstats -c commit_end=$MAIN_BRANCH -c time_begin=$TIME_WEEK_AGO -c output_suffix=monthly .
+
+	cd $CURRENT_DIR 
+done
