@@ -1,0 +1,22 @@
+<?php
+// Grab all files from the desired folder
+$repo = basename($_GET['folder']);
+$mode = basename($_GET['mode']);
+
+$files = glob("$repo/$mode/*");
+
+$dirs = array_filter($files, 'is_dir');
+array_multisort(
+	array_map( 'filemtime', $dirs ),
+	SORT_NUMERIC,
+	SORT_DESC,
+	$dirs
+);
+
+$goto = $dirs[0];
+
+if (!$goto) {
+	die("Not found!");
+} else {
+	header("Location: $goto");
+}
