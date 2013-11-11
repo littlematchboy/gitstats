@@ -12,12 +12,12 @@ from common import getgnuplotversion, exectime_external
 from config import conf
 
 if sys.version_info < (2, 6):
-       print >> sys.stderr, "Python 2.6 or higher is required for gitstats"
-       sys.exit(1)
-
+    print >> sys.stderr, "Python 2.6 or higher is required for gitstats"
+    sys.exit(1)
 
 os.environ['LC_ALL'] = 'C'
 time_start = time.time()
+
 
 def usage():
     print("""
@@ -36,7 +36,7 @@ Please see the manual page for more details.
 class GitStats:
     def run(self, args_orig):
         optlist, args = getopt.getopt(args_orig, 'hc:', ["help"])
-        for o,v in optlist:
+        for o, v in optlist:
             if o == '-c':
                 key, value = v.split('=', 1)
                 if key not in conf:
@@ -44,7 +44,7 @@ class GitStats:
                 if isinstance(conf[key], int):
                     conf[key] = int(value)
                 elif isinstance(conf[key], dict):
-                    kk,vv = value.split(',', 1)
+                    kk, vv = value.split(',', 1)
                     conf[key][kk] = vv
                 else:
                     conf[key] = value
@@ -104,11 +104,16 @@ class GitStats:
 
         print('Generating report...')
 
-        single_project_output_path = os.path.join(outputpath, data.projectname)
+        output_suffix = conf['output_suffix']
+        single_project_output_path = os.path.join(outputpath, data.projectname, output_suffix)
 
-        time_format = '%Y-%m-%d %H:%M:%S'
-        single_project_output_path += \
-            "(%s to %s)" % (data.getFirstCommitDate().strftime(time_format), data.getLastCommitDate().strftime(time_format))
+        time_begin = conf['time_begin']
+        time_end = conf['time_end']
+        if not time_end:
+            time_end = 'NOW'
+        if time_begin:
+            # time_format = '%Y-%m-%d %H:%M:%S'
+            single_project_output_path += "(%s to %s)" % (time_begin, time_end)
 
         try:
             os.makedirs(single_project_output_path)
@@ -123,14 +128,16 @@ class GitStats:
 
         time_end = time.time()
         exectime_internal = time_end - time_start
-        print('Execution time %.5f secs, %.5f secs (%.2f %%) in external commands)' % (exectime_internal, exectime_external, (100.0 * exectime_external) / exectime_internal))
+        print('Execution time %.5f secs, %.5f secs (%.2f %%) in external commands)' % (
+        exectime_internal, exectime_external, (100.0 * exectime_external) / exectime_internal))
         if sys.stdin.isatty():
             print('You may now run:')
             print()
             print('sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''"))
             print()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     g = GitStats()
     g.run(sys.argv[1:])
 

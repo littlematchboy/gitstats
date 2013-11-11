@@ -16,6 +16,7 @@ conf = {
     'project_name': '',
     'merge_authors': {},
     'output': '/opt/web/gitstats/',
+    'output_suffix': '',
     'processes': 8,
 }
 
