@@ -210,7 +210,7 @@ class GitDataCollector(DataCollector):
                 print('Warning: failed to parse line "%s"' % line)
 
         # extensions and size of files
-        lines = getpipeoutput(['git ls-tree -r -l -z %s %s' % (getcommitrange('HEAD', end_only = True), get_commit_time()) ]).split('\000')
+        lines = getpipeoutput(['git ls-tree -r -l -z %s' % (getcommitrange('HEAD', end_only = True)) ]).split('\000')
         blobs_to_read = []
         for line in lines:
             if len(line) == 0:
