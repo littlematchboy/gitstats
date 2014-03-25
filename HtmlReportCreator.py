@@ -711,5 +711,5 @@ plot """
         pass
 
     def print_branch_option(self, f, branch):
-        f.write("<option>" + branch + "</option")
+        f.write("<option>" + branch + "</option>")
         pass
