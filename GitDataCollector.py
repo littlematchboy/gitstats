@@ -35,10 +35,10 @@ class GitDataCollector(DataCollector):
 
         lines = getpipeoutput(['git branch -a']).split('\n')
         for line in lines:
-            if len(line) == 0:
+            if len(line) < 2:
                 continue
-
-            (star, branch_name, remain) = line.split(' ')
+            line = line[2:]
+            branch_name = line.split(' ')[0].replace('remotes/origin/')
             self.branches.append(branch_name)
 
         # collect info on tags, starting from latest
