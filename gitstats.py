@@ -96,7 +96,6 @@ class GitStats:
         lines = getpipeoutput(['git branch -a']).split('\n')
         for line in lines:
             data = GitDataCollector()
-            # data.loadCache(cachefile)
 
             if len(line) < 2:
                 continue
@@ -120,6 +119,7 @@ class GitStats:
 
             print('Running dir: %s' % rundir)
             print('Generating report...')
+            print('Output dir: %s' % outputpath)
 
             output_suffix = conf['output_suffix']
             single_project_output_path = os.path.join(outputpath, data.projectname, output_suffix)
