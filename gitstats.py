@@ -118,6 +118,7 @@ class GitStats:
 
             os.chdir(rundir)
 
+            print('Running dir: %s' % rundir)
             print('Generating report...')
 
             output_suffix = conf['output_suffix']
