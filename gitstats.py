@@ -6,6 +6,7 @@ import getopt
 import os
 import sys
 import time
+from common import *
 from GitDataCollector import GitDataCollector
 
 from HtmlReportCreator import HTMLReportCreator
@@ -80,9 +81,6 @@ class GitStats:
         print('Output path: %s' % outputpath)
         cachefile = os.path.join(outputpath, 'gitstats.cache')
 
-        data = GitDataCollector()
-        data.loadCache(cachefile)
-
         if len(args) == 1:
             gitpaths = args[0:]
         else:
@@ -91,45 +89,60 @@ class GitStats:
         gitpath = gitpaths[0]
         # only for 1 path
         # for gitpath in gitpaths:
+
         print('Git path: %s' % gitpath)
 
-        os.chdir(gitpath)
+        main_branch = 'master'
+        lines = getpipeoutput(['git branch -a']).split('\n')
+        for line in lines:
+            data = GitDataCollector()
+            data.loadCache(cachefile)
 
-        print('Collecting data...')
-        data.collect(gitpath)
-        os.chdir(rundir)
+            if len(line) < 2:
+                continue
+            line = line[2:]
+            branch_name = line.split(' ')[0].replace('remotes/origin/', '')
+            if branch_name == 'HEAD':
+                main_branch = line.split(' ')[2]
+                continue
 
-        print('Refining data...')
-        data.saveCache(cachefile)
-        data.refine()
+            os.chdir(gitpath)
 
-        os.chdir(rundir)
+            print('Collecting data...')
+            data.collect(gitpath)
+            os.chdir(rundir)
 
-        print('Generating report...')
+            print('Refining data...')
+            data.saveCache(cachefile)
+            data.refine()
 
-        output_suffix = conf['output_suffix']
-        single_project_output_path = os.path.join(outputpath, data.projectname, output_suffix)
+            os.chdir(rundir)
 
-        time_begin = conf['time_begin']
-        time_end = conf['time_end']
-        if not time_end:
-            time_end = datetime.now().strftime("%Y-%m-%d")
-        if time_begin:
-            # time_format = '%Y-%m-%d %H:%M:%S'
-            single_project_output_path = os.path.join(single_project_output_path, "%s to %s" % (time_begin, time_end))
-        else:
-            single_project_output_path = os.path.join(single_project_output_path, "all")
+            print('Generating report...')
 
-        try:
-            os.makedirs(single_project_output_path)
-        except OSError:
-            pass
-        if not os.path.isdir(single_project_output_path):
-            print('FATAL: Unable to create output folder')
-            sys.exit(1)
+            output_suffix = conf['output_suffix']
+            single_project_output_path = os.path.join(outputpath, data.projectname, output_suffix)
 
-        report = HTMLReportCreator()
-        report.create(data, single_project_output_path)
+            time_begin = conf['time_begin']
+            time_end = conf['time_end']
+            if not time_end:
+                time_end = datetime.now().strftime("%Y-%m-%d")
+            if time_begin:
+                # time_format = '%Y-%m-%d %H:%M:%S'
+                single_project_output_path = os.path.join(single_project_output_path, "%s to %s" % (time_begin, time_end))
+            else:
+                single_project_output_path = os.path.join(single_project_output_path, "all")
+
+            try:
+                os.makedirs(single_project_output_path)
+            except OSError:
+                pass
+            if not os.path.isdir(single_project_output_path):
+                print('FATAL: Unable to create output folder')
+                sys.exit(1)
+
+            report = HTMLReportCreator()
+            report.create(data, single_project_output_path + '/' + branch_name)
 
         time_end = time.time()
         exectime_internal = time_end - time_start
