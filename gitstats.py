@@ -106,7 +106,8 @@ class GitStats:
                 main_branch = line.split(' ')[2]
                 continue
 
-            os.chdir(gitpath)
+            os.chdir(rundir)
+            os.chdir(project_dir)
 
             print('Collecting data...')
             data.collect(gitpath)
