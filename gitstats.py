@@ -91,6 +91,7 @@ class GitStats:
         # for gitpath in gitpaths:
 
         print('Git path: %s' % gitpath)
+        project_dir = os.path.basename(os.path.abspath(gitpath))
 
         main_branch = 'master'
         lines = getpipeoutput(['git branch -a']).split('\n')
@@ -117,6 +118,7 @@ class GitStats:
 
             os.chdir(rundir)
 
+            print('project dir: %s' % project_dir)
             print('Running dir: %s' % rundir)
             print('Generating report...')
             print('Output dir: %s' % outputpath)
