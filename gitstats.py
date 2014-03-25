@@ -88,14 +88,16 @@ class GitStats:
         else:
             gitpaths = args[0:-1]
 
-        for gitpath in gitpaths:
-            print('Git path: %s' % gitpath)
+        gitpath = gitpaths[0]
+        # only for 1 path
+        # for gitpath in gitpaths:
+        print('Git path: %s' % gitpath)
 
-            os.chdir(gitpath)
+        os.chdir(gitpath)
 
-            print('Collecting data...')
-            data.collect(gitpath)
-            os.chdir(rundir)
+        print('Collecting data...')
+        data.collect(gitpath)
+        os.chdir(rundir)
 
         print('Refining data...')
         data.saveCache(cachefile)
