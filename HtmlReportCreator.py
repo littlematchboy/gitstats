@@ -2,7 +2,6 @@ __author__ = 'tho'
 
 import datetime
 import glob
-import os
 import shutil
 
 from ReportCreator import ReportCreator
@@ -622,7 +621,7 @@ plot """
         i = 1
         plots = []
         for a in self.authors_to_plot:
-            i = i + 1
+            i += 1
             plots.append("""'lines_of_code_by_author.dat' using 1:%d title "%s" w lines""" % (i, a.replace("\"", "\\\"")))
         f.write(", ".join(plots))
         f.write('\n')
@@ -649,7 +648,7 @@ plot """
         i = 1
         plots = []
         for a in self.authors_to_plot:
-            i = i + 1
+            i += 1
             plots.append("""'commits_by_author.dat' using 1:%d title "%s" w lines""" % (i, a.replace("\"", "\\\"")))
         f.write(", ".join(plots))
         f.write('\n')
@@ -682,7 +681,7 @@ plot """
 <div class="container">
 """ % (self.title, conf['style'], getversion()))
 
-    def printNav(self, f):
+    def printNav(self, f, data = None):
         f.write("""
 <div class="navbar">
   <div class="navbar-inner">
@@ -693,7 +692,20 @@ plot """
 		<li><a href="files.html">Files</a></li>
 		<li><a href="lines.html">Lines</a></li>
 		<li><a href="tags.html">Tags</a></li>
+		<li><a href="tags.html">Tags</a></li>"""
+        )
+        if data is not None:
+           self.printBranchDropDown(f, data)
+        f.write("""
 	</ul>
   </div>
 </div>
 """)
+
+    def printBranchDropDown(self, f, data):
+        for branch in data.branches:
+            self.printBranchOption(f, branch)
+        pass
+
+    def printBranchOption(self, f, branch):
+        pass
