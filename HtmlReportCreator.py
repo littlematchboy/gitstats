@@ -14,7 +14,16 @@ class HTMLReportCreator(ReportCreator):
         self.title = data.projectname
 
         if branch_name is not '':
+            branch_name = branch_name.replace('/', '_')
             path += '-' + branch_name
+
+        try:
+            os.makedirs(path)
+        except OSError:
+            pass
+        if not os.path.isdir(path):
+            print('FATAL: Unable to create output folder')
+
         # copy static files. Looks in the binary directory, ../share/gitstats and /usr/share/gitstats
         binarypath = os.path.dirname(os.path.abspath(__file__))
         secondarypath = os.path.join(binarypath, '..', 'share', 'gitstats')
