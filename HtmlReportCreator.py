@@ -32,7 +32,7 @@ class HTMLReportCreator(ReportCreator):
 
         f.write('<h1>GitStats - %s</h1>' % data.projectname)
 
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>')
         f.write('<dt>Project name</dt><dd>%s</dd>' % (data.projectname))
@@ -67,7 +67,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/activity.html', 'w')
         self.printHeader(f)
         f.write('<h1>Activity</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         #f.write('<h2>Last 30 days</h2>')
 
@@ -258,7 +258,7 @@ class HTMLReportCreator(ReportCreator):
         self.printHeader(f)
 
         f.write('<h1>Authors</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         # Authors :: List of authors
         f.write(html_header(2, 'List of Authors'))
@@ -370,7 +370,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/files.html', 'w')
         self.printHeader(f)
         f.write('<h1>Files</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>\n')
         f.write('<dt>Total files</dt><dd>%d</dd>' % data.getTotalFiles())
@@ -421,7 +421,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/lines.html', 'w')
         self.printHeader(f)
         f.write('<h1>Lines</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>\n')
         f.write('<dt>Total lines</dt><dd>%d</dd>' % data.getTotalLOC())
@@ -443,7 +443,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/tags.html', 'w')
         self.printHeader(f)
         f.write('<h1>Tags</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>')
         f.write('<dt>Total tags</dt><dd>%d</dd>' % len(data.tags))
@@ -691,7 +691,6 @@ plot """
 		<li><a href="authors.html">Authors</a></li>
 		<li><a href="files.html">Files</a></li>
 		<li><a href="lines.html">Lines</a></li>
-		<li><a href="tags.html">Tags</a></li>
 		<li><a href="tags.html">Tags</a></li>"""
         )
         if data is not None:
