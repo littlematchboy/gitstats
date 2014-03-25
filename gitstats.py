@@ -96,7 +96,7 @@ class GitStats:
         lines = getpipeoutput(['git branch -a']).split('\n')
         for line in lines:
             data = GitDataCollector()
-            data.loadCache(cachefile)
+            # data.loadCache(cachefile)
 
             if len(line) < 2:
                 continue
