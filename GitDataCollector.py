@@ -33,6 +33,14 @@ class GitDataCollector(DataCollector):
                     stamp = 0
                 self.tags[tag] = { 'stamp': stamp, 'hash' : hash, 'date' : datetime.datetime.fromtimestamp(stamp).strftime('%Y-%m-%d'), 'commits': 0, 'authors': {} }
 
+        lines = getpipeoutput(['git branch -a']).split('\n')
+        for line in lines:
+            if len(line) == 0:
+                continue
+
+            (star, branch_name, remain) = line.split(' ')
+            self.branches.append(branch_name)
+
         # collect info on tags, starting from latest
         tags_sorted_by_date_desc = map(lambda el : el[1], reversed(sorted(map(lambda el : (el[1]['date'], el[0]), self.tags.items()))))
         prev = None

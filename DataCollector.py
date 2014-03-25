@@ -61,7 +61,7 @@ class DataCollector:
         self.tags = {}
 
         # branches
-        self.branches = {}
+        self.branches = []
 
         self.files_by_stamp = {} # stamp -> files
 
