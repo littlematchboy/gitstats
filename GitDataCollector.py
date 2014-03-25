@@ -39,6 +39,9 @@ class GitDataCollector(DataCollector):
                 continue
             line = line[2:]
             branch_name = line.split(' ')[0].replace('remotes/origin/', '')
+            if branch_name == 'HEAD':
+                continue
+
             self.branches.append(branch_name)
 
         # collect info on tags, starting from latest
