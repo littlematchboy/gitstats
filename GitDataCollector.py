@@ -26,8 +26,8 @@ class GitDataCollector(DataCollector):
             self.branches.append(branch_name)
 
         for branch in self.branches:
-            getpipeoutput('git branch %s --track origin/%s' % (branch, branch))
-            getpipeoutput('git checkout %s' % branch)
+            getpipeoutput(['git branch %s --track origin/%s' % (branch, branch)])
+            getpipeoutput(['git checkout %s' % branch])
 
             self.total_authors += int(getpipeoutput(['git shortlog -s %s %s' % (getcommitrange(), get_commit_time()), 'wc -l']))
             #self.total_lines = int(getoutput('git-ls-files -z |xargs -0 cat |wc -l'))
