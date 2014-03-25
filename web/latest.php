@@ -7,7 +7,7 @@ $mode = basename($_GET['mode']);
 
 $branch = isset($_GET['branch']) ? SEPARATOR . basename($_GET['branch']) : '';
 
-$files = glob("$repo/$mode/*");
+$files = glob("$repo/$mode$branch/*");
 
 $dirs = array_filter($files, 'is_dir');
 array_multisort(
@@ -22,5 +22,5 @@ $goto = $dirs[0];
 if (!$goto) {
 	die("Not found!");
 } else {
-	header("Location: $goto$branch");
+	header("Location: $goto");
 }
