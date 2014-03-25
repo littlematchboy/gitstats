@@ -9,10 +9,12 @@ from common import *
 from config import conf
 
 class HTMLReportCreator(ReportCreator):
-    def create(self, data, path):
+    def create(self, data, path, branch_name = ''):
         ReportCreator.create(self, data, path)
         self.title = data.projectname
 
+        if branch_name is not '':
+            path += '-' + branch_name
         # copy static files. Looks in the binary directory, ../share/gitstats and /usr/share/gitstats
         binarypath = os.path.dirname(os.path.abspath(__file__))
         secondarypath = os.path.join(binarypath, '..', 'share', 'gitstats')

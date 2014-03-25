@@ -142,7 +142,7 @@ class GitStats:
                 sys.exit(1)
 
             report = HTMLReportCreator()
-            report.create(data, single_project_output_path + '/' + branch_name)
+            report.create(data, single_project_output_path, branch_name)
 
         time_end = time.time()
         exectime_internal = time_end - time_start
