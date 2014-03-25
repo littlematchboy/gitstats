@@ -1,7 +1,11 @@
 <?php
 // Grab all files from the desired folder
+define(SEPARATOR, '-')
+
 $repo = basename($_GET['folder']);
 $mode = basename($_GET['mode']);
+
+$branch = isset($_GET['branch']) ? SEPARATOR . basename($_GET['branch']) : '';
 
 $files = glob("$repo/$mode/*");
 
@@ -18,5 +22,5 @@ $goto = $dirs[0];
 if (!$goto) {
 	die("Not found!");
 } else {
-	header("Location: $goto");
+	header("Location: $goto$branch");
 }
