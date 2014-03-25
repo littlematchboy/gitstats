@@ -1,6 +1,6 @@
 <?php
 // Grab all files from the desired folder
-define(SEPARATOR, '-')
+define(SEPARATOR, '-');
 
 $repo = basename($_GET['folder']);
 $mode = basename($_GET['mode']);
