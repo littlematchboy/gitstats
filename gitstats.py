@@ -123,7 +123,7 @@ class GitStats:
             print('Output dir: %s' % output_path)
 
             output_suffix = conf['output_suffix']
-            single_project_output_path = os.path.join(output_path, data.project_name, output_suffix)
+            single_project_output_path = os.path.join(output_path, data.projectname, output_suffix)
 
             time_begin = conf['time_begin']
             time_end = conf['time_end']

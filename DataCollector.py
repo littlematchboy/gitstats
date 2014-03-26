@@ -76,9 +76,9 @@ class DataCollector:
     def collect(self, dir):
         self.dir = dir
         if len(conf['project_name']) == 0:
-            self.project_name = os.path.basename(os.path.abspath(dir))
+            self.projectname = os.path.basename(os.path.abspath(dir))
         else:
-            self.project_name = conf['project_name']
+            self.projectname = conf['project_name']
 
     ##
     # Load cacheable data
