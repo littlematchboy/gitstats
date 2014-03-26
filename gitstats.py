@@ -107,7 +107,6 @@ class GitStats:
                 continue
 
             os.chdir(rundir)
-            os.chdir(project_dir)
 
             print('Collecting data...')
             data.collect(input_path)
