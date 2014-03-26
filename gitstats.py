@@ -88,6 +88,7 @@ class GitStats:
         # for gitpath in gitpaths:
 
         print('Git path: %s' % input_path)
+        print('Running dir: %s' % rundir)
         project_dir = os.path.basename(os.path.abspath(input_path))
 
         # loop through all branches, generate report for each branch
@@ -119,12 +120,11 @@ class GitStats:
             os.chdir(rundir)
 
             print('project dir: %s' % project_dir)
-            print('Running dir: %s' % rundir)
             print('Generating report...')
             print('Output dir: %s' % output_path)
 
             output_suffix = conf['output_suffix']
-            single_project_output_path = os.path.join(output_path, data.projectname, output_suffix)
+            single_project_output_path = os.path.join(output_path, data.project_name, output_suffix)
 
             time_begin = conf['time_begin']
             time_end = conf['time_end']
