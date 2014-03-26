@@ -17,7 +17,7 @@ conf = {
     'merge_authors': {},
     'output': '/opt/web/gitstats/',
     'output_suffix': '',
-    'processes': 2,
+    'processes': 8,
 }
 
 # By default, gnuplot is searched from path, but can be overridden with the

@@ -202,7 +202,9 @@ class GitDataCollector(DataCollector):
                 revs_to_read.append((time,rev))
 
         #Read revisions from repo
-        time_rev_count = Pool(processes=conf['processes']).map(getnumoffilesfromrev, revs_to_read)
+        pool = Pool(processes=conf['processes']);
+        time_rev_count = pool.map(getnumoffilesfromrev, revs_to_read)
+        pool.close()
 
         #Update cache with new revisions and append then to general list
         for (time, rev, count) in time_rev_count:
@@ -260,7 +262,9 @@ class GitDataCollector(DataCollector):
                 blobs_to_read.append((ext,blob_id))
 
         #Get info abount line count for new blob's that wasn't found in cache
-        ext_blob_linecount = Pool(processes=24).map(getnumoflinesinblob, blobs_to_read)
+        pool = Pool(processes=24);
+        ext_blob_linecount = pool.map(getnumoflinesinblob, blobs_to_read)
+        pool.close()
 
         #Update cache and write down info about number of number of lines
         for (ext, blob_id, linecount) in ext_blob_linecount:
