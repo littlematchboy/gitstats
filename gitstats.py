@@ -106,8 +106,8 @@ class GitStats:
                 main_branch = line.split(' ')[2]
                 continue
 
-            getpipeoutput('git branch %s --track origin/%s' % (branch_name, branch_name))
-            getpipeoutput('git checkout %s' % branch_name)
+            getpipeoutput(['git branch %s --track origin/%s' % (branch_name, branch_name)])
+            getpipeoutput(['git checkout %s' % branch_name])
 
             os.chdir(rundir)
 
