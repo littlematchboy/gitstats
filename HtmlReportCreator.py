@@ -713,7 +713,7 @@ plot """
 """)
 
     def printBranchDropDown(self, f, data):
-        f.write("<select>")
+        f.write("<select id=\"branch_selector\">")
 
         for branch in data.branches:
             self.print_branch_option(f, branch)
