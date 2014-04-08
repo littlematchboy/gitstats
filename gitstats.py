@@ -110,7 +110,8 @@ class GitStats:
 
             getpipeoutput(['git branch %s --track origin/%s' % (branch_name, branch_name)])
             getpipeoutput(['git checkout %s' % branch_name])
-            getpipeoutput(['git merge FETCH_HEAD'])
+            getpipeoutput(['git reset HEAD --hard'])
+            getpipeoutput(['git pull'])
 
             print('Collecting data...')
             data.collect(input_path)
@@ -149,6 +150,7 @@ class GitStats:
 
             report = HTMLReportCreator()
             report.create(data, single_project_output_path, branch_name)
+            getpipeoutput(['git reset HEAD --hard'])
 
         print("Switch back to main branch: %s" % main_branch)
         getpipeoutput(['git checkout %s' % main_branch])
