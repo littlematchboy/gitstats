@@ -108,10 +108,10 @@ class GitStats:
 
             os.chdir(rundir)
 
-            getpipeoutput(['git branch %s --track origin/%s' % (branch_name, branch_name)])
-            getpipeoutput(['git checkout %s' % branch_name])
-            getpipeoutput(['git reset HEAD --hard'])
-            getpipeoutput(['git pull'])
+            # delete the branch
+            getpipeoutput(['git branch -D %s' % branch_name])
+            # create the branch
+            getpipeoutput(['git checkout -b %s --track origin/%s' % (branch_name, branch_name)])
 
             print('Collecting data...')
             data.collect(input_path)
@@ -150,7 +150,6 @@ class GitStats:
 
             report = HTMLReportCreator()
             report.create(data, single_project_output_path, branch_name)
-            getpipeoutput(['git reset HEAD --hard'])
 
         print("Switch back to main branch: %s" % main_branch)
         getpipeoutput(['git checkout %s' % main_branch])
