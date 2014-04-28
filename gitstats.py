@@ -150,6 +150,7 @@ class GitStats:
 
             report = HTMLReportCreator()
             report.create(data, single_project_output_path, branch_name)
+            getpipeoutput(['git reset HEAD --hard'])
 
         print("Switch back to main branch: %s" % main_branch)
         getpipeoutput(['git checkout %s' % main_branch])
