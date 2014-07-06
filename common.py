@@ -26,7 +26,7 @@ def html_header(level, text):
 def getkeyssortedbyvalues(dict):
     return map(lambda el : el[1], sorted(map(lambda el : (el[1], el[0]), dict.items())))
 
-def getpipeoutput(cmds, quiet = False):
+def getpipeoutput(cmds, quiet = True):
     global exectime_external
     start = time.time()
     if not quiet and ON_LINUX and os.isatty(1):

@@ -3,9 +3,7 @@
 # GPLv2 / GPLv3
 from datetime import datetime
 import getopt
-import os
-import sys
-import time
+from common import *
 from GitDataCollector import GitDataCollector
 
 from HtmlReportCreator import HTMLReportCreator
@@ -13,7 +11,7 @@ from common import getgnuplotversion, exectime_external
 from config import conf
 
 if sys.version_info < (2, 6):
-    print >> sys.stderr, "Python 2.6 or higher is required for gitstats"
+    print("Python 2.6 or higher is required for GitStats")
     sys.exit(1)
 
 os.environ['LC_ALL'] = 'C'
@@ -61,15 +59,15 @@ class GitStats:
 
         # if output is not specified, output to web directory (default folder)
         if len(args) == 1:
-            outputpath = conf['output']
+            output_path = conf['output']
         else:
-            outputpath = os.path.abspath(args[-1])
+            output_path = os.path.abspath(args[-1])
 
         try:
-            os.makedirs(outputpath)
+            os.makedirs(output_path)
         except OSError:
             pass
-        if not os.path.isdir(outputpath):
+        if not os.path.isdir(output_path):
             print('FATAL: Output path is not a directory or does not exist')
             sys.exit(1)
 
@@ -77,57 +75,85 @@ class GitStats:
             print('gnuplot not found')
             sys.exit(1)
 
-        print('Output path: %s' % outputpath)
-        cachefile = os.path.join(outputpath, 'gitstats.cache')
-
-        data = GitDataCollector()
-        data.loadCache(cachefile)
+        print('Output path: %s' % output_path)
+        cached_file = os.path.join(output_path, 'gitstats.cache')
 
         if len(args) == 1:
-            gitpaths = args[0:]
+            input_paths = args[0:]
         else:
-            gitpaths = args[0:-1]
+            input_paths = args[0:-1]
 
-        for gitpath in gitpaths:
-            print('Git path: %s' % gitpath)
+        input_path = input_paths[0]
+        # only for 1 path
+        # for gitpath in gitpaths:
 
-            os.chdir(gitpath)
+        print('Git path: %s' % input_path)
+        print('Running dir: %s' % rundir)
+        project_dir = os.path.basename(os.path.abspath(input_path))
 
-            print('Collecting data...')
-            data.collect(gitpath)
+        # loop through all branches, generate report for each branch
+        main_branch = 'master'
+        lines = getpipeoutput(['git branch -a']).split('\n')
+        for line in lines:
+            data = GitDataCollector()
+
+            # get local branch name
+            if len(line) < 2:
+                continue
+            line = line[2:]
+            branch_name = line.split(' ')[0].replace('remotes/origin/', '')
+            if branch_name == 'HEAD':
+                main_branch = line.split(' ')[2]
+                continue
+
             os.chdir(rundir)
 
-        print('Refining data...')
-        data.saveCache(cachefile)
-        data.refine()
+            # delete the branch
+            getpipeoutput(['git branch -D %s' % branch_name])
+            # create the branch
+            getpipeoutput(['git checkout -b %s --track origin/%s' % (branch_name, branch_name)])
 
-        os.chdir(rundir)
+            print('Collecting data...')
+            data.collect(input_path)
+            os.chdir(rundir)
 
-        print('Generating report...')
+            print('Refining data...')
+            data.saveCache(cached_file)
+            data.refine()
 
-        output_suffix = conf['output_suffix']
-        single_project_output_path = os.path.join(outputpath, data.projectname, output_suffix)
+            os.chdir(rundir)
 
-        time_begin = conf['time_begin']
-        time_end = conf['time_end']
-        if not time_end:
-            time_end = datetime.now().strftime("%Y-%m-%d")
-        if time_begin:
-            # time_format = '%Y-%m-%d %H:%M:%S'
-            single_project_output_path = os.path.join(single_project_output_path, "%s to %s" % (time_begin, time_end))
-        else:
-            single_project_output_path = os.path.join(single_project_output_path, "all")
+            print('project dir: %s' % project_dir)
+            print('Generating report...')
+            print('Output dir: %s' % output_path)
 
-        try:
-            os.makedirs(single_project_output_path)
-        except OSError:
-            pass
-        if not os.path.isdir(single_project_output_path):
-            print('FATAL: Unable to create output folder')
-            sys.exit(1)
+            output_suffix = conf['output_suffix']
+            single_project_output_path = os.path.join(output_path, data.projectname, output_suffix)
 
-        report = HTMLReportCreator()
-        report.create(data, single_project_output_path)
+            time_begin = conf['time_begin']
+            time_end = conf['time_end']
+            if not time_end:
+                time_end = datetime.now().strftime("%Y-%m-%d")
+            if time_begin:
+                # time_format = '%Y-%m-%d %H:%M:%S'
+                single_project_output_path = os.path.join(single_project_output_path, "%s to %s" % (time_begin, time_end))
+            else:
+                single_project_output_path = os.path.join(single_project_output_path, "all")
+
+            try:
+                os.makedirs(single_project_output_path)
+            except OSError:
+                pass
+            if not os.path.isdir(single_project_output_path):
+                print('FATAL: Unable to create output folder')
+                sys.exit(1)
+
+            report = HTMLReportCreator()
+            report.create(data, single_project_output_path, branch_name)
+            getpipeoutput(['git reset HEAD --hard'])
+
+        print("Switch back to main branch: %s" % main_branch)
+        getpipeoutput(['git checkout %s' % main_branch])
 
         time_end = time.time()
         exectime_internal = time_end - time_start

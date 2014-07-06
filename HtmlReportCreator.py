@@ -2,7 +2,6 @@ __author__ = 'tho'
 
 import datetime
 import glob
-import os
 import shutil
 
 from ReportCreator import ReportCreator
@@ -10,9 +9,20 @@ from common import *
 from config import conf
 
 class HTMLReportCreator(ReportCreator):
-    def create(self, data, path):
+    def create(self, data, path, branch_name = ''):
         ReportCreator.create(self, data, path)
         self.title = data.projectname
+
+        if branch_name is not '':
+            branch_name = branch_name.replace('/', '_')
+            path += '-' + branch_name
+
+        try:
+            os.makedirs(path)
+        except OSError:
+            pass
+        if not os.path.isdir(path):
+            print('FATAL: Unable to create output folder')
 
         # copy static files. Looks in the binary directory, ../share/gitstats and /usr/share/gitstats
         binarypath = os.path.dirname(os.path.abspath(__file__))
@@ -33,7 +43,7 @@ class HTMLReportCreator(ReportCreator):
 
         f.write('<h1>GitStats - %s</h1>' % data.projectname)
 
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>')
         f.write('<dt>Project name</dt><dd>%s</dd>' % (data.projectname))
@@ -68,7 +78,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/activity.html', 'w')
         self.printHeader(f)
         f.write('<h1>Activity</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         #f.write('<h2>Last 30 days</h2>')
 
@@ -259,7 +269,7 @@ class HTMLReportCreator(ReportCreator):
         self.printHeader(f)
 
         f.write('<h1>Authors</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         # Authors :: List of authors
         f.write(html_header(2, 'List of Authors'))
@@ -276,7 +286,7 @@ class HTMLReportCreator(ReportCreator):
             rest = allauthors[conf['max_authors']:]
             f.write('<p class="moreauthors">These didn\'t make it to the top: %s</p>' % ', '.join(rest))
 
-        f.write(html_header(2, 'Cumulated Added Lines of Code per Author'))
+        f.write(html_header(2, 'Cumulative Added Lines of Code per Author'))
         f.write('<img src="lines_of_code_by_author.png" alt="Lines of code per Author" />')
         if len(allauthors) > conf['max_authors']:
             f.write('<p class="moreauthors">Only top %d authors shown</p>' % conf['max_authors'])
@@ -371,7 +381,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/files.html', 'w')
         self.printHeader(f)
         f.write('<h1>Files</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>\n')
         f.write('<dt>Total files</dt><dd>%d</dd>' % data.getTotalFiles())
@@ -422,7 +432,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/lines.html', 'w')
         self.printHeader(f)
         f.write('<h1>Lines</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>\n')
         f.write('<dt>Total lines</dt><dd>%d</dd>' % data.getTotalLOC())
@@ -444,7 +454,7 @@ class HTMLReportCreator(ReportCreator):
         f = open(path + '/tags.html', 'w')
         self.printHeader(f)
         f.write('<h1>Tags</h1>')
-        self.printNav(f)
+        self.printNav(f, data)
 
         f.write('<dl>')
         f.write('<dt>Total tags</dt><dd>%d</dd>' % len(data.tags))
@@ -622,7 +632,7 @@ plot """
         i = 1
         plots = []
         for a in self.authors_to_plot:
-            i = i + 1
+            i += 1
             plots.append("""'lines_of_code_by_author.dat' using 1:%d title "%s" w lines""" % (i, a.replace("\"", "\\\"")))
         f.write(", ".join(plots))
         f.write('\n')
@@ -649,7 +659,7 @@ plot """
         i = 1
         plots = []
         for a in self.authors_to_plot:
-            i = i + 1
+            i += 1
             plots.append("""'commits_by_author.dat' using 1:%d title "%s" w lines""" % (i, a.replace("\"", "\\\"")))
         f.write(", ".join(plots))
         f.write('\n')
@@ -682,7 +692,7 @@ plot """
 <div class="container">
 """ % (self.title, conf['style'], getversion()))
 
-    def printNav(self, f):
+    def printNav(self, f, data = None):
         f.write("""
 <div class="navbar">
   <div class="navbar-inner">
@@ -692,8 +702,25 @@ plot """
 		<li><a href="authors.html">Authors</a></li>
 		<li><a href="files.html">Files</a></li>
 		<li><a href="lines.html">Lines</a></li>
-		<li><a href="tags.html">Tags</a></li>
+		<li><a href="tags.html">Tags</a></li>"""
+        )
+        if data is not None:
+           self.printBranchDropDown(f, data)
+        f.write("""
 	</ul>
   </div>
 </div>
 """)
+
+    def printBranchDropDown(self, f, data):
+        f.write("<select id=\"branch_selector\">")
+
+        for branch in data.branches:
+            self.print_branch_option(f, branch)
+
+        f.write("</select>")
+        pass
+
+    def print_branch_option(self, f, branch):
+        f.write("<option>" + branch + "</option>")
+        pass

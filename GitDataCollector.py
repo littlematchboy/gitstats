@@ -12,6 +12,19 @@ class GitDataCollector(DataCollector):
     def collect(self, dir):
         DataCollector.collect(self, dir)
 
+        main_branch = 'master'
+        lines = getpipeoutput(['git branch -a']).split('\n')
+        for line in lines:
+            if len(line) < 2:
+                continue
+            line = line[2:]
+            branch_name = line.split(' ')[0].replace('remotes/origin/', '')
+            if branch_name == 'HEAD':
+                main_branch = line.split(' ')[2]
+                continue
+
+            self.branches.append(branch_name)
+
         self.total_authors += int(getpipeoutput(['git shortlog -s %s %s' % (getcommitrange(), get_commit_time()), 'wc -l']))
         #self.total_lines = int(getoutput('git-ls-files -z |xargs -0 cat |wc -l'))
 
@@ -189,7 +202,9 @@ class GitDataCollector(DataCollector):
                 revs_to_read.append((time,rev))
 
         #Read revisions from repo
-        time_rev_count = Pool(processes=conf['processes']).map(getnumoffilesfromrev, revs_to_read)
+        pool = Pool(processes=conf['processes']);
+        time_rev_count = pool.map(getnumoffilesfromrev, revs_to_read)
+        pool.close()
 
         #Update cache with new revisions and append then to general list
         for (time, rev, count) in time_rev_count:
@@ -247,7 +262,9 @@ class GitDataCollector(DataCollector):
                 blobs_to_read.append((ext,blob_id))
 
         #Get info abount line count for new blob's that wasn't found in cache
-        ext_blob_linecount = Pool(processes=24).map(getnumoflinesinblob, blobs_to_read)
+        pool = Pool(processes=24);
+        ext_blob_linecount = pool.map(getnumoflinesinblob, blobs_to_read)
+        pool.close()
 
         #Update cache and write down info about number of number of lines
         for (ext, blob_id, linecount) in ext_blob_linecount:
@@ -275,7 +292,7 @@ class GitDataCollector(DataCollector):
                 continue
 
             # <stamp> <author>
-            if re.search('files? changed', line) == None:
+            if re.search('files? changed', line) is None:
                 pos = line.find(' ')
                 if pos != -1:
                     try:
@@ -332,7 +349,7 @@ class GitDataCollector(DataCollector):
                 continue
 
             # <stamp> <author>
-            if re.search('files? changed', line) == None:
+            if re.search('files? changed', line) is None:
                 pos = line.find(' ')
                 if pos != -1:
                     try:

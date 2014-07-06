@@ -14,16 +14,16 @@ class DataCollector:
         self.stamp_created = time.time()
         self.cache = {}
         self.total_authors = 0
-        self.activity_by_hour_of_day = {} # hour -> commits
-        self.activity_by_day_of_week = {} # day -> commits
-        self.activity_by_month_of_year = {} # month [1-12] -> commits
-        self.activity_by_hour_of_week = {} # weekday -> hour -> commits
+        self.activity_by_hour_of_day = {}       # hour -> commits
+        self.activity_by_day_of_week = {}       # day -> commits
+        self.activity_by_month_of_year = {}     # month [1-12] -> commits
+        self.activity_by_hour_of_week = {}      # weekday -> hour -> commits
         self.activity_by_hour_of_day_busiest = 0
         self.activity_by_hour_of_week_busiest = 0
-        self.activity_by_year_week = {} # yy_wNN -> commits
+        self.activity_by_year_week = {}         # yy_wNN -> commits
         self.activity_by_year_week_peak = 0
 
-        self.authors = {} # name -> {commits, first_commit_stamp, last_commit_stamp, last_active_day, active_days, lines_added, lines_removed}
+        self.authors = {}           # name -> {commits, first_commit_stamp, last_commit_stamp, last_active_day, active_days, lines_added, lines_removed}
 
         self.total_commits = 0
         self.total_files = 0
@@ -59,6 +59,9 @@ class DataCollector:
 
         # tags
         self.tags = {}
+
+        # branches
+        self.branches = []
 
         self.files_by_stamp = {} # stamp -> files
 

@@ -1,9 +1,13 @@
 <?php
 // Grab all files from the desired folder
+define(SEPARATOR, '-');
+
 $repo = basename($_GET['folder']);
 $mode = basename($_GET['mode']);
 
-$files = glob("$repo/$mode/*");
+$branch = isset($_GET['branch']) ? SEPARATOR . basename($_GET['branch']) : '';
+
+$files = glob("$repo/$mode$branch/*");
 
 $dirs = array_filter($files, 'is_dir');
 array_multisort(
